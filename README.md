@@ -50,6 +50,29 @@ This repository contains a Machine Learning project that leverages Docker for co
 2. Under **Pipeline**, choose **Pipeline script from SCM** and configure it to use the Git repository where this `Jenkinsfile` is stored.
 3. Run the Jenkins job to automatically build the Docker image, run the container, and clean up.
 
+#### Using MLflow
+1. **Track Experiments**:
+   MLflow is used to track experiments and log parameters, metrics, and models. To start tracking, ensure MLflow is properly configured in your script.
+   ```python
+   import mlflow
+   import mlflow.sklearn
+ 
+   # Start MLflow experiment
+   mlflow.set_experiment("ML Lab Experiment")
+ 
+   with mlflow.start_run():
+       mlflow.log_param("param1", value1)
+       mlflow.log_metric("accuracy", accuracy_score)
+       mlflow.sklearn.log_model(model, "model")
+   ```
+ 
+2. **Run MLflow UI**:
+   Start the MLflow tracking server to visualize experiments:
+   ```bash
+   mlflow ui
+   ```
+   Access the UI at `http://localhost:5000`.
+
 ## Contributing
 
 If you'd like to contribute to this project, feel free to fork the repository and submit a pull request with your changes.
