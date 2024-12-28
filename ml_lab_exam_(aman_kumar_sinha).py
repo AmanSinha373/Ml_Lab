@@ -144,10 +144,10 @@ for model_name in models:
 # Evaluating each best model
 for model_name, model in best_models.items():
     print(f"\nEvaluating {model_name}...")
-
+    y_pred = model.predict(X_test_tfidf)
     accuracy = accuracy_score(y_test, y_pred) # Calculating accuracy as well
     print(f"Accuracy: {accuracy:.4f}")
-    y_pred = model.predict(X_test_tfidf)
+
     print("Classification Report:")
     print(classification_report(y_test, y_pred))
 
@@ -199,4 +199,26 @@ for i in range(num_clusters):
     print(cluster_tweets.sample(5))  # Print 5 sample tweets from the cluster
 
 """###Our analysis revealed that Logistic Regression performed slightly better than SVM and Random Forest with a balanced F1-score across sentiment classes. Clustering and topic modeling provided additional insights into sentiment distribution and dominant themes. Overall, the approach effectively demonstrated sentiment analysis techniques, though fine-tuning and dimensionality reduction could improve clustering visualization."""
+
+#ML FLOW
+!pip install mlflow
+
+import mlflow
+import mlflow.sklearn
+from mlflow.models.signature import infer_signature
+
+
+# Starting MLflow experiment
+mlflow.set_experiment("ML Lab Experiment")
+
+with mlflow.start_run():
+    # Log parameters and metrics
+    mlflow.log_param("param1", accuracy)
+    mlflow.log_metric("accuracy", accuracy)
+
+    # Infer and log model signature
+    signature = infer_signature(X_test_tfidf, model.predict(X_test_tfidf))
+
+    # Log the model with signature
+    mlflow.sklearn.log_model(model, "model", signature=signature)
 
